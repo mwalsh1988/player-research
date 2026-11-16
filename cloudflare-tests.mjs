@@ -1,0 +1,4 @@
+import {test} from 'node:test';import assert from 'node:assert/strict';import worker from './dist/server/cloudflare.js';
+test('Cloudflare rejects spoofed identity headers without platform-validated Access',async()=>{const r=await worker.fetch(new Request('https://example.workers.dev/api/bootstrap',{headers:{'oai-authenticated-user-id':'forged','cf-access-authenticated-user-email':'forged@example.com'}}),{},{});assert.equal(r.status,401)});
+test('Cloudflare requires a verified email identity',async()=>{const r=await worker.fetch(new Request('https://example.workers.dev/api/bootstrap'),{},{access:{getIdentity:async()=>({})}});assert.equal(r.status,403)});
+test('Signed-in users can read research through Cloudflare Access',async()=>{const r=await worker.fetch(new Request('https://example.workers.dev/api/bootstrap'),{},{access:{getIdentity:async()=>({email:'owner@example.com'})}});assert.equal(r.status,200);assert.equal((await r.json()).roster.length,256)});

@@ -1,0 +1,11 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "player-research",
+  "main": "dist/server/cloudflare.js",
+  "compatibility_date": "2026-11-16",
+  "workers_dev": true,
+  "preview_urls": false,
+  "build": { "command": "npm run build" },
+  "r2_buckets": [{ "binding": "BUCKET", "bucket_name": "player-research" }],
+  "observability": { "enabled": true }
+}
