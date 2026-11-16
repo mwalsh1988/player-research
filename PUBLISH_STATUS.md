@@ -1,11 +1,9 @@
-# Publication checkpoint — Cloudflare deployment active
+# Research engine deployment checkpoint
 
-Production is deployed at https://player-research.michaelbwalsh1.workers.dev/ using the `player-research` Worker and private R2 bucket of the same name.
+Active: https://player-research.michaelbwalsh1.workers.dev/
 
-Cloudflare Access protects all Worker traffic. Email-code sign-in is limited to the owner's configured personal email. The Worker additionally requires Cloudflare's validated `ctx.access` identity and ignores client-supplied identity headers.
+The staged Tavily search/article retrieval and Cloudflare AI synthesis pipeline is deployed. The AI binding is configured and a live structured-output call succeeded. Tavily has no API key configured; research runs are disabled with explicit setup instructions until TAVILY_API_KEY is added as a Worker secret.
 
-Eight functional tests pass. A browser visit confirmed the live Cloudflare Access sign-in gate. Signed-in live news scans and hosted note-saving still require an authenticated end-to-end check.
+Thirteen tests pass, including provider-fixture integration, citation rejection and Access boundary tests. Signed-in browser verification confirmed the live setup notice and disabled Run research control. Live search and article retrieval have not been tested; that requires the key and a real school run.
 
-Use `npm run build` and deploy `dist/server/cloudflare.js` with the repository's `wrangler.jsonc`. The Cloudflare Git integration is not configured; this first production deployment was uploaded through the connected Cloudflare API.
-
-The earlier ChatGPT Site `appgprj_6afaa916ddd48191a8264a6aa882b7e4` is still unpublished; the Cloudflare deployment is now the active host. No credentials are stored in source.
+R2 retains job stages and reports. Player editorial findings and team pricing assessments remain separate AI drafts requiring review. No market/sales data is connected. Access remains enabled for the owner. The repository is manually deployed through the Cloudflare API; GitHub automatic deployment is not configured.

@@ -1,1 +1,1 @@
-{"name":"player-research","private":true,"type":"module","scripts":{"build":"node scripts/build.mjs","test":"node --test tests.mjs cloudflare-tests.mjs","dev":"node scripts/dev.mjs"}}
+{"name": "player-research", "private": true, "type": "module", "scripts": {"build": "node scripts/build.mjs", "test": "node --test tests.mjs cloudflare-tests.mjs research-tests.mjs", "dev": "node scripts/dev.mjs"}}

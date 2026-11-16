@@ -7,5 +7,6 @@
   "preview_urls": false,
   "build": { "command": "npm run build" },
   "r2_buckets": [{ "binding": "BUCKET", "bucket_name": "player-research" }],
+  "ai": { "binding": "AI" },
   "observability": { "enabled": true }
 }

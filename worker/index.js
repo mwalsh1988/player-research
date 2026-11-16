@@ -1,3 +1,4 @@
+import {researchReadiness,researchApi} from './research-engine.js';
 const ROSTER=/*ROSTER*/null;
 const SEED=/*SEED*/null;
 const PAGE=/*PAGE*/null;
@@ -15,15 +16,17 @@ function dateRange(start,end){if(!/^\d{4}-\d{2}-\d{2}$/.test(start)||!/^\d{4}-\d
 async function readObjects(bucket,prefix,limit=100){let list=await bucket.list({prefix,limit});let objects=await Promise.all(list.objects.map(async o=>{let v=await bucket.get(o.key);return v?await v.json():null;}));return objects.filter(Boolean);}
 export default {async fetch(req,env){const url=new URL(req.url);try{
  if(url.pathname==='/')return new Response(PAGE,{headers:{...headers,'Content-Type':'text/html; charset=utf-8','Content-Security-Policy':"default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'none'"}});
- if(url.pathname==='/api/bootstrap'&&req.method==='GET')return json({roster:ROSTER,seed:SEED,sheet:SHEET,storageReady:!!env.BUCKET});
+ if(url.pathname==='/api/bootstrap'&&req.method==='GET')return json({roster:ROSTER,seed:SEED,sheet:SHEET,storageReady:!!env.BUCKET,research:researchReadiness(env)});
  if(!url.pathname.startsWith('/api/'))return new Response('Not found',{status:404});
  if(!env.BUCKET)return json({error:'Research storage is unavailable. Saved research remains visible; updates cannot be saved yet.'},503);
- if(url.pathname==='/api/library'&&req.method==='GET'){const [runs,notes]=await Promise.all([readObjects(env.BUCKET,'runs/',100),readObjects(env.BUCKET,'notes/',200)]);return json({runs:runs.sort((a,b)=>b.completedAt.localeCompare(a.completedAt)),notes:notes.sort((a,b)=>b.createdAt.localeCompare(a.createdAt))});}
+ if(url.pathname==='/api/library'&&req.method==='GET'){const [runs,notes,researchJobs]=await Promise.all([readObjects(env.BUCKET,'runs/',100),readObjects(env.BUCKET,'notes/',200),readObjects(env.BUCKET,'research/index/',100)]);return json({runs:runs.sort((a,b)=>b.completedAt.localeCompare(a.completedAt)),notes:notes.sort((a,b)=>b.createdAt.localeCompare(a.createdAt)),researchJobs:researchJobs.sort((a,b)=>b.updatedAt.localeCompare(a.updatedAt))});}
+ if(url.pathname==='/api/research/status'&&req.method==='GET')return researchApi(req,url,null,env,ROSTER);
  if(req.method!=='POST')return json({error:'Method not allowed'},405);
  if(req.headers.get('origin')!==url.origin)return json({error:'This action must be run from the Research Room.'},403);
  if(!req.headers.get('oai-authenticated-user-id')&&url.hostname!=='localhost'&&url.hostname!=='127.0.0.1')return json({error:'Sign in to run updates or save research.'},401);
  if(Number(req.headers.get('content-length')||0)>20000)return json({error:'Request too large'},413);
  const body=await req.json();
+ if(url.pathname.startsWith('/api/research/'))return researchApi(req,url,body,env,ROSTER);
  if(url.pathname==='/api/update'){
   let school=field(body.school,80),start=field(body.start,10),end=field(body.end,10);let players=ROSTER.filter(p=>p.school===school);
   if(!players.length||!dateRange(start,end))return json({error:'Choose a roster school and a valid date range of 31 days or fewer.'},400);
