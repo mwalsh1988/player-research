@@ -2,8 +2,10 @@
 
 Active: https://player-research.michaelbwalsh1.workers.dev/
 
-The staged Tavily search/article retrieval and Cloudflare AI synthesis pipeline is deployed. The AI binding is configured and a live structured-output call succeeded. Tavily has no API key configured; research runs are disabled with explicit setup instructions until TAVILY_API_KEY is added as a Worker secret.
+Tavily and Cloudflare AI are connected. Live end-to-end verification completed November 16, 2026 for Ohio State, November 14-15: eight searches, 24 sources retrieved, 12 selected for analysis, seven cited player drafts and one team assessment saved to R2. Browser verification after reload confirmed the player drafts, school/status filtering and separate team assessment.
 
-Thirteen tests pass, including provider-fixture integration, citation rejection and Access boundary tests. Signed-in browser verification confirmed the live setup notice and disabled Run research control. Live search and article retrieval have not been tested; that requires the key and a real school run.
+An initial AI context-window failure was fixed by ranking sources and bounding article input. Retries reused saved sources rather than repeating paid searches. School/status filters now preserve AI findings, and dashboard counts include completed reports. Fourteen tests pass, including the new large-source regression check.
 
-R2 retains job stages and reports. Player editorial findings and team pricing assessments remain separate AI drafts requiring review. No market/sales data is connected. Access remains enabled for the owner. The repository is manually deployed through the Cloudflare API; GitHub automatic deployment is not configured.
+Outputs remain AI drafts requiring review. Some findings are routine photo captions rather than strong editorial leads; content relevance and editorial specificity need further refinement. Pricing output has no connected market/sales/fill-speed data and must not be treated as a validated price recommendation.
+
+Access remains enabled for the owner. GitHub automatic deployment is not configured; deployment uses the connected Cloudflare API. Credentials are stored only as Worker secrets.
