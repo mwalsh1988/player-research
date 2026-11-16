@@ -1,4 +1,4 @@
-# Publication checkpoint - Cloudflare deployment active
+# Publication checkpoint — Cloudflare deployment active
 
 Production is deployed at https://player-research.michaelbwalsh1.workers.dev/ using the `player-research` Worker and private R2 bucket of the same name.
 

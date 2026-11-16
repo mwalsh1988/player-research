@@ -14,7 +14,7 @@ The Google Sheet is a read-only snapshot loaded November 15, 2026. One apparent 
 
 Hosted data persists in the `BUCKET` R2 binding. The library reads the first 100 saved school scans and 200 saved notes per request; this is a prototype retention view and should be paginated before broad ongoing use. Cloudflare Access restricts the deployed site to the owner using email-code sign-in. The Cloudflare entrypoint requires platform-validated `ctx.access` identity on every research route. Mutation routes additionally require same-origin POST. No third-party keys or scheduled research emails are configured.
 
-Initial November 14-15 findings are explicitly editorial drafts, carried over from the research session. They require source review before external use.
+Initial November 14–15 findings are explicitly editorial drafts, carried over from the research session. They require source review before external use.
 
 ## Cloudflare deployment
 
